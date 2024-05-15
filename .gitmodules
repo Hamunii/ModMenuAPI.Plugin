@@ -1,0 +1,3 @@
+[submodule "ModMenuAPI"]
+	path = ModMenuAPI
+	url = https://github.com/Hamunii/ModMenuAPI
