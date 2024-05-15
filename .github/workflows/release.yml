@@ -49,6 +49,9 @@ jobs:
           name: thunderstore-build
           path: ./ModMenuAPI.Plugin/*/Thunderstore/Packages/
 
+      - name: Display structure of files
+        run: ls -R
+
       - name: Upload Plugin.LC to Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
