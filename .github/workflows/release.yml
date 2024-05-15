@@ -49,18 +49,15 @@ jobs:
           name: thunderstore-build
           path: ./ModMenuAPI.Plugin/*/Thunderstore/Packages/
 
-      - name: Display structure of files
-        run: ls -R
-
       - name: Upload Plugin.LC to Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ github.event.release.tag_name }} ./ModMenuAPI.Plugin/LethalCompany/Thunderstore/Packages/*.zip
+        run: gh release upload ${{ github.event.release.tag_name }} ./ModMenuAPI.Plugin/*/Thunderstore/Packages/LethalCompany/Thunderstore/Packages/*.zip
 
       - name: Upload Plugin.CW to Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ github.event.release.tag_name }} ./ModMenuAPI.Plugin/ContentWarning/Thunderstore/Packages/*.zip
+        run: gh release upload ${{ github.event.release.tag_name }} ./ModMenuAPI.Plugin/*/Thunderstore/Packages/ContentWarning/Thunderstore/Packages/*.zip
 
 #   deploy-thunderstore:
 #     if: ${{ github.event.release.prerelease == false }}
