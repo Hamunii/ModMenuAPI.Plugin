@@ -18,11 +18,8 @@ class CWStatsPatches
     }
 }
 
-class SetMoneyPatch : ModMenuButtonActionBase
+class SetMoneyPatch() : ModMenuButtonActionBase("Set Money")
 {
-    readonly ModMenuItemMetadata meta = new("Set Money");
-    public override ModMenuItemMetadata Metadata => meta;
-
     public override void OnClick()
     {
         SurfaceNetworkHandler.RoomStats.Money = 100000000;
@@ -30,11 +27,8 @@ class SetMoneyPatch : ModMenuButtonActionBase
     }
 }
 
-class ResetMoneyPatch : ModMenuButtonActionBase
+class ResetMoneyPatch() : ModMenuButtonActionBase("Reset Money")
 {
-    readonly ModMenuItemMetadata meta = new("Reset Money");
-    public override ModMenuItemMetadata Metadata => meta;
-
     public override void OnClick()
     {
         SurfaceNetworkHandler.RoomStats.Money = 0;
@@ -42,44 +36,32 @@ class ResetMoneyPatch : ModMenuButtonActionBase
     }
 }
 
-class SetMetaCoinsPatch : ModMenuButtonActionBase
+class SetMetaCoinsPatch() : ModMenuButtonActionBase("Set Meta Coins")
 {
-    readonly ModMenuItemMetadata meta = new("Set Meta Coins");
-    public override ModMenuItemMetadata Metadata => meta;
-
     public override void OnClick()
     {
         MetaProgressionHandler.SetMetaCoins(100000000);
     }
 }
 
-class ResetMetaCoinsPatch : ModMenuButtonActionBase
+class ResetMetaCoinsPatch() : ModMenuButtonActionBase("Reset Meta Coins")
 {
-    readonly ModMenuItemMetadata meta = new("Reset Meta Coins");
-    public override ModMenuItemMetadata Metadata => meta;
-
     public override void OnClick()
     {
         MetaProgressionHandler.SetMetaCoins(0);
     }
 }
 
-class NextDayPatch : ModMenuButtonActionBase
+class NextDayPatch() : ModMenuButtonActionBase("Next Day")
 {
-    ModMenuItemMetadata meta = new("Next Day");
-    public override ModMenuItemMetadata Metadata => meta;
-
     public override void OnClick()
     {
         SurfaceNetworkHandler.RoomStats.NextDay();
     }
 }
 
-class FulfillQuotaPatch : ModMenuButtonActionBase
+class FulfillQuotaPatch() : ModMenuButtonActionBase("Fulfill Quota")
 {
-    readonly ModMenuItemMetadata meta = new("Fulfill Quota");
-    public override ModMenuItemMetadata Metadata => meta;
-
     public override void OnClick()
     {
         SurfaceNetworkHandler.RoomStats.CurrentQuota = SurfaceNetworkHandler.RoomStats.QuotaToReach;

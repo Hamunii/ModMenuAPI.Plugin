@@ -60,14 +60,10 @@ class LCActionEnemy
 class SpawnEnemyAction : ModMenuButtonActionBase
 {
     private SpawnableEnemyWithRarity _enemyWithRarity;
-    internal SpawnEnemyAction(SpawnableEnemyWithRarity enemyWithRarity)
+    internal SpawnEnemyAction(SpawnableEnemyWithRarity enemyWithRarity) : base($"Spawn {enemyWithRarity.enemyType.enemyName}")
     {
         _enemyWithRarity = enemyWithRarity;
-        meta = new($"Spawn {_enemyWithRarity.enemyType.enemyName}");
     }
-
-    readonly ModMenuItemMetadata meta = new($"Spawn <Unnamed>");
-    public override ModMenuItemMetadata Metadata => meta;
 
     public override void OnClick()
     {
@@ -78,15 +74,11 @@ class SpawnEnemyAction : ModMenuButtonActionBase
 
 class GiveSelfItemAction : ModMenuButtonActionBase
 {
-    private Item _item;
-    internal GiveSelfItemAction(Item item)
+    private readonly Item _item;
+    internal GiveSelfItemAction(Item item) : base($"Give {item.itemName}")
     {
         _item = item;
-        meta = new($"Give {item.itemName}");
     }
-
-    readonly ModMenuItemMetadata meta = new($"Give <Unnamed>");
-    public override ModMenuItemMetadata Metadata => meta;
 
     public override void OnClick()
     {

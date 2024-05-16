@@ -9,17 +9,15 @@ class CWPlayerPatches
     const string menuTitle = "Player";
     internal static void Init()
     {
-        ModMenu.RegisterItem(new InfiniteJumpPatch(), menuTitle);
-        ModMenu.RegisterItem(new FastMovementPatch(), menuTitle);
+        ModMenu.RegisterItem(new InfiniteJumpToggle(), menuTitle);
+        ModMenu.RegisterItem(new FastMovementToggle(), menuTitle);
     }
 }
 
-class InfiniteJumpPatch : ModMenuButtonToggleBase
+class InfiniteJumpToggle() : ModMenuButtonToggleBase("Infinite Jump", "Removes check for touching ground when jumping.")
 {
-    readonly ModMenuItemMetadata meta = new("Infinite Jump", "Removes check for touching ground when jumping.");
-    public override ModMenuItemMetadata Metadata => meta;
-    protected override void OnEnable() { IL.PlayerController.TryJump += PlayerController_TryJump; }
-    protected override void OnDisable() { IL.PlayerController.TryJump -= PlayerController_TryJump; }
+    protected override void OnEnable() => IL.PlayerController.TryJump += PlayerController_TryJump;
+    protected override void OnDisable() => IL.PlayerController.TryJump -= PlayerController_TryJump;
     private static void PlayerController_TryJump(ILContext il)
     {
         ILCursor c = new(il);
@@ -33,10 +31,8 @@ class InfiniteJumpPatch : ModMenuButtonToggleBase
     }
 }
 
-class FastMovementPatch : ModMenuButtonToggleBase
+class FastMovementToggle() : ModMenuButtonToggleBase("Fast Movement")
 {
-    readonly ModMenuItemMetadata meta = new("Fast Movement");
-    public override ModMenuItemMetadata Metadata => meta;
     PlayerController? self = null;
     protected override void OnEnable() {
         if (Player.localPlayer is null)

@@ -65,10 +65,8 @@ class LCMiscPatches
     }
 }
 
-class IsEditorPatch : ModMenuButtonToggleBase
+class IsEditorPatch() : ModMenuButtonToggleBase(new ModMenuItemMetadata("IsEditor"){ InvokeOnInit = true })
 {
-    readonly ModMenuItemMetadata meta = new("IsEditor"){ InvokeOnInit = true };
-    public override ModMenuItemMetadata Metadata => meta;
     private static Hook isEditorHook = new Hook(AccessTools.DeclaredPropertyGetter(typeof(Application), nameof(Application.isEditor)), Override_Application_isEditor, new HookConfig(){ ManualApply = true });
 
     protected override void OnEnable()
@@ -90,10 +88,8 @@ class IsEditorPatch : ModMenuButtonToggleBase
 }
 
 
-internal class InfiniteCreditsPatch : ModMenuButtonToggleBase
+internal class InfiniteCreditsPatch() : ModMenuButtonToggleBase(new ModMenuItemMetadata("Infinite Credits"){ InvokeOnInit = true })
 {
-    readonly ModMenuItemMetadata meta = new("Infinite Credits"){ InvokeOnInit = true };
-    public override ModMenuItemMetadata Metadata => meta;
     protected override void OnEnable(){ On.Terminal.RunTerminalEvents += InfiniteCredits_Terminal_RunTerminalEvents; }
     protected override void OnDisable(){ On.Terminal.RunTerminalEvents -= InfiniteCredits_Terminal_RunTerminalEvents; }
 
@@ -106,13 +102,8 @@ internal class InfiniteCreditsPatch : ModMenuButtonToggleBase
 
 internal class PullLeverAction : ModMenuButtonActionBase
 {
-    readonly ModMenuItemMetadata meta = new("Pull Lever");
-    public override ModMenuItemMetadata Metadata => meta;
-
-    internal PullLeverAction()
-    {
-        On.StartMatchLever.Start += StartMatchLever_Start;
-    }
+    internal PullLeverAction() : base("Pull Lever")
+        => On.StartMatchLever.Start += StartMatchLever_Start;
     private static void StartMatchLever_Start(On.StartMatchLever.orig_Start orig, StartMatchLever self)
     {
         Plugin.Logger.LogInfo("Got Lever instance!");
@@ -144,11 +135,8 @@ internal class PullLeverAction : ModMenuButtonActionBase
     }
 }
 
-internal class MeetQuotaPatch : ModMenuButtonToggleBase
+internal class MeetQuotaPatch() : ModMenuButtonToggleBase(new ModMenuItemMetadata("Force Meet Quota"){ InvokeOnInit = true })
 {
-    readonly ModMenuItemMetadata meta = new("Force Meet Quota");
-    public override ModMenuItemMetadata Metadata => meta;
-
     protected override void OnEnable() => On.StartOfRound.EndOfGame += StartOfRound_EndOfGame;
     protected override void OnDisable() => On.StartOfRound.EndOfGame -= StartOfRound_EndOfGame;
 
@@ -166,13 +154,10 @@ class WeatherOverride : ModMenuButtonToggleBase
 {
     internal static WeatherOverride? currentOverride;
     internal readonly LevelWeatherType WeatherType;
-    internal WeatherOverride(string weatherName, LevelWeatherType weatherType)
+    internal WeatherOverride(string weatherName, LevelWeatherType weatherType) : base(weatherName)
     {
-        meta = new(weatherName);
         WeatherType = weatherType;
     }
-    readonly ModMenuItemMetadata meta = new("Override <weather>");
-    public override ModMenuItemMetadata Metadata => meta;
 
     protected override void OnEnable()
     {

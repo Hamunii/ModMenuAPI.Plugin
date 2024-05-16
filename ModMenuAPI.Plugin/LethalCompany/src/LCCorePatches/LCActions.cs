@@ -22,11 +22,8 @@ class LCActionPatches
     }
 }
 
-class TeleportSelfToEntranceAction : ModMenuButtonActionBase
+class TeleportSelfToEntranceAction() : ModMenuButtonActionBase("Teleport Self To Entrance")
 {
-    readonly ModMenuItemMetadata meta = new("Teleport Self To Entrance");
-    public override ModMenuItemMetadata Metadata => meta;
-
     public override void OnClick()
     {
         var self = StartOfRound.Instance.localPlayerController;
@@ -47,11 +44,8 @@ class TeleportSelfToEntranceAction : ModMenuButtonActionBase
     }
 }
 
-class ToggleTestRoomAction : ModMenuButtonActionBase
+class ToggleTestRoomAction() : ModMenuButtonActionBase("Toggle Test Room")
 {
-    readonly ModMenuItemMetadata meta = new("Toggle Test Room");
-    public override ModMenuItemMetadata Metadata => meta;
-
     public override void OnClick()
     {
         LCActionPatches.QMM_Instance.Debug_ToggleTestRoom();
