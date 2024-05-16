@@ -6,7 +6,8 @@ A collection of plugins for various games, using [ModMenuAPI](https://github.com
 See [releases](https://github.com/Hamunii/ModMenuAPI.Plugin/releases).
 
 ## Mods
-| Game | Readme |
-|-|-|
-| [![ModMenuAPI.Plugin.LC](https://img.shields.io/badge/Lethal%20Company-911?style=for-the-badge)](https://github.com/Hamunii/ModMenuAPI.Plugin/releases) | [link](/ModMenuAPI.Plugin/LethalCompany/Thunderstore/LC_README.md)
-| [![ModMenuAPI.Plugin.CW](https://img.shields.io/badge/Content%20Warning-eb2?style=for-the-badge)](https://github.com/Hamunii/ModMenuAPI.Plugin/releases) | [link](/ModMenuAPI.Plugin/ContentWarning/Thunderstore/CW_README.md)
+
+| Game | Mod | Readme |
+|------|-----|--------|
+| Lethal Company | [ModMenuAPI.Plugin.LC](https://github.com/Hamunii/ModMenuAPI.Plugin/releases) | [link](/ModMenuAPI.Plugin/LethalCompany/Thunderstore/LC_README.md) |
+| Content Warning | [ModMenuAPI.Plugin.CW](https://github.com/Hamunii/ModMenuAPI.Plugin/releases) | [link](/ModMenuAPI.Plugin/ContentWarning/Thunderstore/CW_README.md) |
