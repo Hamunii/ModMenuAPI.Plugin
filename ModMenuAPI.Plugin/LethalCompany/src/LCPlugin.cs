@@ -1,11 +1,11 @@
 using BepInEx;
 using BepInEx.Logging;
-using PluginLC.CorePatches;
+using ModMenuAPI.Plugin.LC.CorePatches;
 using MonoMod.RuntimeDetour.HookGen;
 using System.Reflection;
 using ModMenuAPI.ModMenuItems;
 
-namespace PluginLC;
+namespace ModMenuAPI.Plugin.LC;
 
 [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
 internal class Plugin : BaseUnityPlugin

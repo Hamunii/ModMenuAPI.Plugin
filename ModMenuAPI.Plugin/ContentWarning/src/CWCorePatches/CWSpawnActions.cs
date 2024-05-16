@@ -4,7 +4,7 @@ using HarmonyLib;
 using MonoMod.Cil;
 using ModMenuAPI.ModMenuItems;
 
-namespace PluginCW.CorePatches;
+namespace ModMenuAPI.Plugin.CW.CorePatches;
 
 class CWSpawnActions
 {
