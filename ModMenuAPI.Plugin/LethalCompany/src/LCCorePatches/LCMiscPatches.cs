@@ -14,13 +14,13 @@ namespace PluginLC.CorePatches;
 class LCMiscPatches
 {
     const string menuMisc = "Misc";
-    internal static ModMenuButtonContextMenuInstantiable weatherOverridesMenu = new("Weather Override >");
+    internal static MMButtonContextMenuInstantiable weatherOverridesMenu = new("Weather Override >");
     internal static void Init()
     {
-        ModMenu.RegisterItem(new IsEditorPatch(), menuMisc);
-        ModMenu.RegisterItem(new InfiniteCreditsPatch(), menuMisc);
+        ModMenu.RegisterItem(new IsEditorToggle(), menuMisc);
+        ModMenu.RegisterItem(new InfiniteCreditsToggle(), menuMisc);
         ModMenu.RegisterItem(new PullLeverAction(), menuMisc);
-        ModMenu.RegisterItem(new MeetQuotaPatch(), menuMisc);
+        ModMenu.RegisterItem(new MeetQuotaToggle(), menuMisc);
         ModMenu.RegisterItem(weatherOverridesMenu, menuMisc);
 
         if(StartOfRound.Instance is not null)
@@ -65,7 +65,7 @@ class LCMiscPatches
     }
 }
 
-class IsEditorPatch() : ModMenuButtonToggleBase(new ModMenuItemMetadata("IsEditor"){ InvokeOnInit = true })
+class IsEditorToggle() : MMButtonToggle(new MMItemMetadata("IsEditor"){ InvokeOnInit = true })
 {
     private static Hook isEditorHook = new Hook(AccessTools.DeclaredPropertyGetter(typeof(Application), nameof(Application.isEditor)), Override_Application_isEditor, new HookConfig(){ ManualApply = true });
 
@@ -88,7 +88,7 @@ class IsEditorPatch() : ModMenuButtonToggleBase(new ModMenuItemMetadata("IsEdito
 }
 
 
-internal class InfiniteCreditsPatch() : ModMenuButtonToggleBase(new ModMenuItemMetadata("Infinite Credits"){ InvokeOnInit = true })
+internal class InfiniteCreditsToggle() : MMButtonToggle(new MMItemMetadata("Infinite Credits"){ InvokeOnInit = true })
 {
     protected override void OnEnable(){ On.Terminal.RunTerminalEvents += InfiniteCredits_Terminal_RunTerminalEvents; }
     protected override void OnDisable(){ On.Terminal.RunTerminalEvents -= InfiniteCredits_Terminal_RunTerminalEvents; }
@@ -100,7 +100,7 @@ internal class InfiniteCreditsPatch() : ModMenuButtonToggleBase(new ModMenuItemM
     }
 }
 
-internal class PullLeverAction : ModMenuButtonActionBase
+internal class PullLeverAction : MMButtonAction
 {
     internal PullLeverAction() : base("Pull Lever")
         => On.StartMatchLever.Start += StartMatchLever_Start;
@@ -135,7 +135,7 @@ internal class PullLeverAction : ModMenuButtonActionBase
     }
 }
 
-internal class MeetQuotaPatch() : ModMenuButtonToggleBase(new ModMenuItemMetadata("Force Meet Quota"){ InvokeOnInit = true })
+internal class MeetQuotaToggle() : MMButtonToggle(new MMItemMetadata("Force Meet Quota"){ InvokeOnInit = true })
 {
     protected override void OnEnable() => On.StartOfRound.EndOfGame += StartOfRound_EndOfGame;
     protected override void OnDisable() => On.StartOfRound.EndOfGame -= StartOfRound_EndOfGame;
@@ -150,7 +150,7 @@ internal class MeetQuotaPatch() : ModMenuButtonToggleBase(new ModMenuItemMetadat
     }
 }
 
-class WeatherOverride : ModMenuButtonToggleBase
+class WeatherOverride : MMButtonToggle
 {
     internal static WeatherOverride? currentOverride;
     internal readonly LevelWeatherType WeatherType;

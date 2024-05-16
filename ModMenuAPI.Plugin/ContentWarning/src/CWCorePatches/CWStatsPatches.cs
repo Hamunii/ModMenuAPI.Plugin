@@ -7,18 +7,18 @@ class CWStatsPatches
     const string menuTitle = "Stats";
     internal static void Init()
     {
-        ModMenu.RegisterItem(new SetMoneyPatch(), menuTitle);
-        ModMenu.RegisterItem(new ResetMoneyPatch(), menuTitle);
+        ModMenu.RegisterItem(new SetMoneyAction(), menuTitle);
+        ModMenu.RegisterItem(new ResetMoneyAction(), menuTitle);
 
-        ModMenu.RegisterItem(new SetMetaCoinsPatch(), menuTitle);
-        ModMenu.RegisterItem(new ResetMetaCoinsPatch(), menuTitle);
+        ModMenu.RegisterItem(new SetMetaCoinsAction(), menuTitle);
+        ModMenu.RegisterItem(new ResetMetaCoinsAction(), menuTitle);
 
-        ModMenu.RegisterItem(new NextDayPatch(), menuTitle);
-        ModMenu.RegisterItem(new FulfillQuotaPatch(), menuTitle);
+        ModMenu.RegisterItem(new NextDayAction(), menuTitle);
+        ModMenu.RegisterItem(new FulfillQuotaAction(), menuTitle);
     }
 }
 
-class SetMoneyPatch() : ModMenuButtonActionBase("Set Money")
+class SetMoneyAction() : MMButtonAction("Set Money")
 {
     public override void OnClick()
     {
@@ -27,7 +27,7 @@ class SetMoneyPatch() : ModMenuButtonActionBase("Set Money")
     }
 }
 
-class ResetMoneyPatch() : ModMenuButtonActionBase("Reset Money")
+class ResetMoneyAction() : MMButtonAction("Reset Money")
 {
     public override void OnClick()
     {
@@ -36,7 +36,7 @@ class ResetMoneyPatch() : ModMenuButtonActionBase("Reset Money")
     }
 }
 
-class SetMetaCoinsPatch() : ModMenuButtonActionBase("Set Meta Coins")
+class SetMetaCoinsAction() : MMButtonAction("Set Meta Coins")
 {
     public override void OnClick()
     {
@@ -44,7 +44,7 @@ class SetMetaCoinsPatch() : ModMenuButtonActionBase("Set Meta Coins")
     }
 }
 
-class ResetMetaCoinsPatch() : ModMenuButtonActionBase("Reset Meta Coins")
+class ResetMetaCoinsAction() : MMButtonAction("Reset Meta Coins")
 {
     public override void OnClick()
     {
@@ -52,7 +52,7 @@ class ResetMetaCoinsPatch() : ModMenuButtonActionBase("Reset Meta Coins")
     }
 }
 
-class NextDayPatch() : ModMenuButtonActionBase("Next Day")
+class NextDayAction() : MMButtonAction("Next Day")
 {
     public override void OnClick()
     {
@@ -60,7 +60,7 @@ class NextDayPatch() : ModMenuButtonActionBase("Next Day")
     }
 }
 
-class FulfillQuotaPatch() : ModMenuButtonActionBase("Fulfill Quota")
+class FulfillQuotaAction() : MMButtonAction("Fulfill Quota")
 {
     public override void OnClick()
     {

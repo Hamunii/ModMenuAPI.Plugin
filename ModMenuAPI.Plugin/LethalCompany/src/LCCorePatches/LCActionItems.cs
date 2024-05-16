@@ -11,8 +11,8 @@ class LCActionEnemy
 {
 
     const string menuAction = "Action";
-    internal static ModMenuButtonContextMenuInstantiable enemySpawnItem = new("Spawn Enemy >");
-    internal static ModMenuButtonContextMenuInstantiable itemSpawnItem = new("Spawn Item >");
+    internal static MMButtonContextMenuInstantiable enemySpawnItem = new("Spawn Enemy >");
+    internal static MMButtonContextMenuInstantiable itemSpawnItem = new("Spawn Item >");
     internal static List<SpawnableEnemyWithRarity> allEnemiesList = new();
     internal static void Init()
     {
@@ -57,7 +57,7 @@ class LCActionEnemy
     }
 }
 
-class SpawnEnemyAction : ModMenuButtonActionBase
+class SpawnEnemyAction : MMButtonAction
 {
     private SpawnableEnemyWithRarity _enemyWithRarity;
     internal SpawnEnemyAction(SpawnableEnemyWithRarity enemyWithRarity) : base($"Spawn {enemyWithRarity.enemyType.enemyName}")
@@ -72,7 +72,7 @@ class SpawnEnemyAction : ModMenuButtonActionBase
     }
 }
 
-class GiveSelfItemAction : ModMenuButtonActionBase
+class GiveSelfItemAction : MMButtonAction
 {
     private readonly Item _item;
     internal GiveSelfItemAction(Item item) : base($"Give {item.itemName}")

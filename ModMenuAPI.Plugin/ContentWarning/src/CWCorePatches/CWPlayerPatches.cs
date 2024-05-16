@@ -14,7 +14,7 @@ class CWPlayerPatches
     }
 }
 
-class InfiniteJumpToggle() : ModMenuButtonToggleBase("Infinite Jump", "Removes check for touching ground when jumping.")
+class InfiniteJumpToggle() : MMButtonToggle("Infinite Jump", "Removes check for touching ground when jumping.")
 {
     protected override void OnEnable() => IL.PlayerController.TryJump += PlayerController_TryJump;
     protected override void OnDisable() => IL.PlayerController.TryJump -= PlayerController_TryJump;
@@ -31,7 +31,7 @@ class InfiniteJumpToggle() : ModMenuButtonToggleBase("Infinite Jump", "Removes c
     }
 }
 
-class FastMovementToggle() : ModMenuButtonToggleBase("Fast Movement")
+class FastMovementToggle() : MMButtonToggle("Fast Movement")
 {
     PlayerController? self = null;
     protected override void OnEnable() {

@@ -14,13 +14,13 @@ class LCPlayerPatches
     const string menuPlayer = "Player";
     internal static void Init()
     {
-        ModMenu.RegisterItem(new InfiniteSprintPatch(), menuPlayer);
-        ModMenu.RegisterItem(new MovementCheatPatch(), menuPlayer);
-        ModMenu.RegisterItem(new OnDeathHealPatch(), menuPlayer);
-        ModMenu.RegisterItem(new InfiniteShotgunAmmoPatch(), menuPlayer);
+        ModMenu.RegisterItem(new InfiniteSprintToggle(), menuPlayer);
+        ModMenu.RegisterItem(new MovementCheatToggle(), menuPlayer);
+        ModMenu.RegisterItem(new OnDeathHealToggle(), menuPlayer);
+        ModMenu.RegisterItem(new InfiniteShotgunAmmoToggle(), menuPlayer);
     }
 }
-class InfiniteSprintPatch() : ModMenuButtonToggleBase(new ModMenuItemMetadata("Infinite Sprint"){ InvokeOnInit = true })
+class InfiniteSprintToggle() : MMButtonToggle(new MMItemMetadata("Infinite Sprint"){ InvokeOnInit = true })
 {
     protected override void OnEnable() => On.GameNetcodeStuff.PlayerControllerB.Update += InfiniteSprint_PlayerControllerB_Update;
     protected override void OnDisable() => On.GameNetcodeStuff.PlayerControllerB.Update -= InfiniteSprint_PlayerControllerB_Update;
@@ -32,7 +32,7 @@ class InfiniteSprintPatch() : ModMenuButtonToggleBase(new ModMenuItemMetadata("I
     }
 }
 
-internal class MovementCheatPatch() : ModMenuButtonToggleBase(new ModMenuItemMetadata("Movement Cheat"){ InvokeOnInit = true })
+internal class MovementCheatToggle() : MMButtonToggle(new MMItemMetadata("Movement Cheat"){ InvokeOnInit = true })
 {
     protected override void OnEnable(){
         On.GameNetcodeStuff.PlayerControllerB.Jump_performed += MovementCheat_PlayerControllerB_Jump_performed;
@@ -96,7 +96,7 @@ internal class MovementCheatPatch() : ModMenuButtonToggleBase(new ModMenuItemMet
     }
 }
 
-internal class OnDeathHealPatch() : ModMenuButtonToggleBase(new ModMenuItemMetadata("On Death: Heal"){ InvokeOnInit = true })
+internal class OnDeathHealToggle() : MMButtonToggle(new MMItemMetadata("On Death: Heal"){ InvokeOnInit = true })
 {
     protected override void OnEnable() => On.GameNetcodeStuff.PlayerControllerB.KillPlayer += OnDeathHeal_PlayerControllerB_KillPlayer;
     protected override void OnDisable() => On.GameNetcodeStuff.PlayerControllerB.KillPlayer -= OnDeathHeal_PlayerControllerB_KillPlayer;
@@ -111,7 +111,7 @@ internal class OnDeathHealPatch() : ModMenuButtonToggleBase(new ModMenuItemMetad
     }
 }
 
-internal class InfiniteShotgunAmmoPatch() : ModMenuButtonToggleBase(new ModMenuItemMetadata("Infinite Shotgun Ammo"){ InvokeOnInit = true })
+internal class InfiniteShotgunAmmoToggle() : MMButtonToggle(new MMItemMetadata("Infinite Shotgun Ammo"){ InvokeOnInit = true })
 {
     protected override void OnEnable() => IL.ShotgunItem.ItemActivate += InfiniteShotgunAmmo_ShotgunItem_ItemActivate;
     protected override void OnDisable() => IL.ShotgunItem.ItemActivate -= InfiniteShotgunAmmo_ShotgunItem_ItemActivate;

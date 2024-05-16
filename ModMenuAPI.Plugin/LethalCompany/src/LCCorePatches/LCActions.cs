@@ -22,7 +22,7 @@ class LCActionPatches
     }
 }
 
-class TeleportSelfToEntranceAction() : ModMenuButtonActionBase("Teleport Self To Entrance")
+class TeleportSelfToEntranceAction() : MMButtonAction("Teleport Self To Entrance")
 {
     public override void OnClick()
     {
@@ -44,7 +44,7 @@ class TeleportSelfToEntranceAction() : ModMenuButtonActionBase("Teleport Self To
     }
 }
 
-class ToggleTestRoomAction() : ModMenuButtonActionBase("Toggle Test Room")
+class ToggleTestRoomAction() : MMButtonAction("Toggle Test Room")
 {
     public override void OnClick()
     {
