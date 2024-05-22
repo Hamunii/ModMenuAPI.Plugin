@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using GameNetcodeStuff;
 using UnityEngine;
 using ModMenuAPI.ModMenuItems;
-using ModMenuAPI.ModMenuItems.BaseItems;
 
 namespace PluginLC.CorePatches;
 
-class LCActionEnemy
+class LCActionMenus
 {
 
     const string menuAction = "Action";

@@ -25,7 +25,7 @@ internal class Plugin : BaseUnityPlugin
         LCMiscPatches.Init();
         LCPlayerPatches.Init();
         LCActionPatches.Init();
-        LCActionEnemy.Init();
+        LCActionMenus.Init();
     }
 
     private void OnDestroy()
