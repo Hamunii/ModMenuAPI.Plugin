@@ -9,7 +9,7 @@ using ModMenuAPI.ModMenuItems;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PluginLC.CorePatches;
+namespace ModMenuAPI.Plugin.LC.CorePatches;
 
 class LCMiscPatches
 {

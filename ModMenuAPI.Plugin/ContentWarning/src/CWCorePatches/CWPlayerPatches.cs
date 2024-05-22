@@ -2,7 +2,7 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using ModMenuAPI.ModMenuItems;
 
-namespace PluginCW.CorePatches;
+namespace ModMenuAPI.Plugin.CW.CorePatches;
 
 class CWPlayerPatches
 {
