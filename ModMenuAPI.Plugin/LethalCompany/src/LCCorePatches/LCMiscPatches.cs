@@ -14,14 +14,15 @@ namespace PluginLC.CorePatches;
 class LCMiscPatches
 {
     const string menuMisc = "Misc";
-    internal static MMButtonContextMenuInstantiable weatherOverridesMenu = new("Weather Override >");
+    internal static MMButtonMenuInstantiable weatherOverridesMenu = new("Weather Override >");
     internal static void Init()
     {
         ModMenu.RegisterItem(new IsEditorToggle(), menuMisc);
         ModMenu.RegisterItem(new InfiniteCreditsToggle(), menuMisc);
-        ModMenu.RegisterItem(new PullLeverAction(), menuMisc);
         ModMenu.RegisterItem(new MeetQuotaToggle(), menuMisc);
         ModMenu.RegisterItem(weatherOverridesMenu, menuMisc);
+        ModMenu.RegisterItem(new SetPlanetWeathersAction(), menuMisc);
+        ModMenu.RegisterItem(new PullLeverAction(), menuMisc);
 
         if(StartOfRound.Instance is not null)
         {
@@ -100,7 +101,7 @@ internal class InfiniteCreditsToggle() : MMButtonToggle(new MMItemMetadata("Infi
     }
 }
 
-internal class PullLeverAction : MMButtonAction
+class PullLeverAction : MMButtonAction
 {
     internal PullLeverAction() : base("Pull Lever")
         => On.StartMatchLever.Start += StartMatchLever_Start;
@@ -135,7 +136,7 @@ internal class PullLeverAction : MMButtonAction
     }
 }
 
-internal class MeetQuotaToggle() : MMButtonToggle(new MMItemMetadata("Force Meet Quota"){ InvokeOnInit = true })
+class MeetQuotaToggle() : MMButtonToggle(new MMItemMetadata("Force Meet Quota"){ InvokeOnInit = true })
 {
     protected override void OnEnable() => On.StartOfRound.EndOfGame += StartOfRound_EndOfGame;
     protected override void OnDisable() => On.StartOfRound.EndOfGame -= StartOfRound_EndOfGame;
@@ -144,7 +145,7 @@ internal class MeetQuotaToggle() : MMButtonToggle(new MMItemMetadata("Force Meet
     {
         TimeOfDay.Instance.quotaFulfilled = TimeOfDay.Instance.profitQuota;
 
-        var origIE = orig(self,bodiesInsured,connectedPlayersOnServer,scrapCollected);
+        var origIE = orig(self, bodiesInsured, connectedPlayersOnServer, scrapCollected);
         while(origIE.MoveNext())
             yield return origIE.Current;
     }
@@ -170,4 +171,8 @@ class WeatherOverride : MMButtonToggle
         if(currentOverride == this)
             currentOverride = null;
     }
+}
+
+class SetPlanetWeathersAction() : MMButtonAction("Force Refresh Weathers") {
+    public override void OnClick() => StartOfRound.Instance.SetPlanetsWeather();
 }

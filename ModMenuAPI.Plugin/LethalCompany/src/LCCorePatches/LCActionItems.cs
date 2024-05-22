@@ -11,8 +11,8 @@ class LCActionEnemy
 {
 
     const string menuAction = "Action";
-    internal static MMButtonContextMenuInstantiable enemySpawnItem = new("Spawn Enemy >");
-    internal static MMButtonContextMenuInstantiable itemSpawnItem = new("Spawn Item >");
+    internal static MMButtonMenuInstantiable enemySpawnItem = new("Spawn Enemy >");
+    internal static MMButtonMenuInstantiable itemSpawnItem = new("Spawn Item >");
     internal static List<SpawnableEnemyWithRarity> allEnemiesList = new();
     internal static void Init()
     {
@@ -57,14 +57,9 @@ class LCActionEnemy
     }
 }
 
-class SpawnEnemyAction : MMButtonAction
+class SpawnEnemyAction(SpawnableEnemyWithRarity enemyWithRarity) : MMButtonAction($"Spawn {enemyWithRarity.enemyType.enemyName}")
 {
-    private SpawnableEnemyWithRarity _enemyWithRarity;
-    internal SpawnEnemyAction(SpawnableEnemyWithRarity enemyWithRarity) : base($"Spawn {enemyWithRarity.enemyType.enemyName}")
-    {
-        _enemyWithRarity = enemyWithRarity;
-    }
-
+    private readonly SpawnableEnemyWithRarity _enemyWithRarity = enemyWithRarity;
     public override void OnClick()
     {
         Vector3 spawnPosition = GameNetworkManager.Instance.localPlayerController.transform.position - Vector3.Scale(new Vector3(-5, 0, -5), GameNetworkManager.Instance.localPlayerController.transform.forward);
@@ -72,14 +67,9 @@ class SpawnEnemyAction : MMButtonAction
     }
 }
 
-class GiveSelfItemAction : MMButtonAction
+class GiveSelfItemAction(Item item) : MMButtonAction($"Give {item.itemName}")
 {
-    private readonly Item _item;
-    internal GiveSelfItemAction(Item item) : base($"Give {item.itemName}")
-    {
-        _item = item;
-    }
-
+    private readonly Item _item = item;
     public override void OnClick()
     {
         GameObject obj = UnityEngine.Object.Instantiate(_item.spawnPrefab, GameNetworkManager.Instance.localPlayerController.transform.position, Quaternion.identity, StartOfRound.Instance.propsContainer);
