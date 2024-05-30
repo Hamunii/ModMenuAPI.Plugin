@@ -20,7 +20,7 @@ class CWStatsPatches
 
 class SetMoneyAction() : MMButtonAction("Set Money")
 {
-    public override void OnClick()
+    protected override void OnClick()
     {
         SurfaceNetworkHandler.RoomStats.Money = 100000000;
         SurfaceNetworkHandler.RoomStats.OnStatsUpdated();
@@ -29,7 +29,7 @@ class SetMoneyAction() : MMButtonAction("Set Money")
 
 class ResetMoneyAction() : MMButtonAction("Reset Money")
 {
-    public override void OnClick()
+    protected override void OnClick()
     {
         SurfaceNetworkHandler.RoomStats.Money = 0;
         SurfaceNetworkHandler.RoomStats.OnStatsUpdated();
@@ -38,7 +38,7 @@ class ResetMoneyAction() : MMButtonAction("Reset Money")
 
 class SetMetaCoinsAction() : MMButtonAction("Set Meta Coins")
 {
-    public override void OnClick()
+    protected override void OnClick()
     {
         MetaProgressionHandler.SetMetaCoins(100000000);
     }
@@ -46,7 +46,7 @@ class SetMetaCoinsAction() : MMButtonAction("Set Meta Coins")
 
 class ResetMetaCoinsAction() : MMButtonAction("Reset Meta Coins")
 {
-    public override void OnClick()
+    protected override void OnClick()
     {
         MetaProgressionHandler.SetMetaCoins(0);
     }
@@ -54,7 +54,7 @@ class ResetMetaCoinsAction() : MMButtonAction("Reset Meta Coins")
 
 class NextDayAction() : MMButtonAction("Next Day")
 {
-    public override void OnClick()
+    protected override void OnClick()
     {
         SurfaceNetworkHandler.RoomStats.NextDay();
     }
@@ -62,7 +62,7 @@ class NextDayAction() : MMButtonAction("Next Day")
 
 class FulfillQuotaAction() : MMButtonAction("Fulfill Quota")
 {
-    public override void OnClick()
+    protected override void OnClick()
     {
         SurfaceNetworkHandler.RoomStats.CurrentQuota = SurfaceNetworkHandler.RoomStats.QuotaToReach;
     }

@@ -8,18 +8,22 @@ namespace ModMenuAPI.Plugin.LC.CorePatches;
 
 class LCActionMenus
 {
-
     const string menuAction = "Action";
-    internal static MMButtonMenuInstantiable enemySpawnItem = new("Spawn Enemy >");
-    internal static MMButtonMenuInstantiable itemSpawnItem = new("Spawn Item >");
-    internal static List<SpawnableEnemyWithRarity> allEnemiesList = new();
+    internal static EnemySpawnMenu enemySpawnInsideMenu = new("Spawn Inside Enemy >", 0);
+    internal static EnemySpawnMenu enemySpawnOutsideMenu = new("Spawn Outside Enemy >", 1);
+    internal static EnemySpawnMenu enemySpawnDaytimeMenu = new("Spawn Daytime Enemy >", 2);
+    internal static MMButtonMenuInstantiable itemSpawnMenu = new("Spawn Item >");
     internal static void Init()
     {
-        ModMenu.RegisterItem(enemySpawnItem, menuAction);
-        ModMenu.RegisterItem(itemSpawnItem, menuAction);
+        ModMenu.RegisterItem(enemySpawnInsideMenu, menuAction);
+        ModMenu.RegisterItem(enemySpawnOutsideMenu, menuAction);
+        ModMenu.RegisterItem(enemySpawnDaytimeMenu, menuAction);
+        ModMenu.RegisterItem(new PrintEnemiesListAction(), menuAction);
+
+        ModMenu.RegisterItem(itemSpawnMenu, menuAction);
+        
         if(RoundManager.Instance is not null)
         {
-            PopulateEnemies();
             PopulateItems();
             return;
         }
@@ -30,28 +34,43 @@ class LCActionMenus
     {
         orig(self);
 
-        if (allEnemiesList.Count == 0)
+        if (itemSpawnMenu.MenuItems.Count == 0)
         {
-            PopulateEnemies();
             PopulateItems();
         }
     }
-    private static void PopulateEnemies()
-    {
-        allEnemiesList.AddRange(RoundManager.Instance.currentLevel.Enemies);
-        allEnemiesList.AddRange(RoundManager.Instance.currentLevel.OutsideEnemies);
-        allEnemiesList.AddRange(RoundManager.Instance.currentLevel.DaytimeEnemies);
-
-        foreach(var enemy in allEnemiesList)
-        {
-            enemySpawnItem.MenuItems.Add(new SpawnEnemyAction(enemy));
-        }
-    }
+    
     private static void PopulateItems()
     {
         foreach (var item in StartOfRound.Instance.allItemsList.itemsList)
         {
-            itemSpawnItem.MenuItems.Add(new GiveSelfItemAction(item));
+            itemSpawnMenu.MenuItems.Add(new GiveSelfItemAction(item));
+        }
+    }
+}
+
+class EnemySpawnMenu(string menuName, int idx) : MMButtonMenu(menuName)
+{
+    public override void OnMenuOpened() => PopulateEnemies(idx);
+    public override void OnMenuClosed() { }
+
+    private void PopulateEnemies(int idx)
+    {
+        Plugin.Logger.LogInfo("filling list");
+        this.MenuItems.Clear();
+
+        List<SpawnableEnemyWithRarity> enemyList = null!; 
+        var cl = StartOfRound.Instance.currentLevel;
+        switch(idx)
+        {
+            case 0: enemyList = cl.Enemies; break;
+            case 1: enemyList = cl.OutsideEnemies; break;
+            case 2: enemyList = cl.DaytimeEnemies; break;
+        }
+        foreach(var enemy in enemyList)
+        {
+            this.MenuItems.Add(new SpawnEnemyAction(enemy));
+            Plugin.Logger.LogInfo("Filled " + enemy.enemyType.enemyName);
         }
     }
 }
@@ -59,7 +78,7 @@ class LCActionMenus
 class SpawnEnemyAction(SpawnableEnemyWithRarity enemyWithRarity) : MMButtonAction($"Spawn {enemyWithRarity.enemyType.enemyName}")
 {
     private readonly SpawnableEnemyWithRarity _enemyWithRarity = enemyWithRarity;
-    public override void OnClick()
+    protected override void OnClick()
     {
         Vector3 spawnPosition = GameNetworkManager.Instance.localPlayerController.transform.position - Vector3.Scale(new Vector3(-5, 0, -5), GameNetworkManager.Instance.localPlayerController.transform.forward);
         RoundManager.Instance.SpawnEnemyGameObject(spawnPosition, 0f, -1, _enemyWithRarity.enemyType);
@@ -69,7 +88,7 @@ class SpawnEnemyAction(SpawnableEnemyWithRarity enemyWithRarity) : MMButtonActio
 class GiveSelfItemAction(Item item) : MMButtonAction($"Give {item.itemName}")
 {
     private readonly Item _item = item;
-    public override void OnClick()
+    protected override void OnClick()
     {
         GameObject obj = UnityEngine.Object.Instantiate(_item.spawnPrefab, GameNetworkManager.Instance.localPlayerController.transform.position, Quaternion.identity, StartOfRound.Instance.propsContainer);
         GrabbableObject _obj = obj.GetComponent<GrabbableObject>();
@@ -96,5 +115,35 @@ class GiveSelfItemAction(Item item) : MMButtonAction($"Give {item.itemName}")
         self.isHoldingObject = true;
         _obj.hasBeenHeld = true;
         _obj.EnablePhysics(false);
+    }
+}
+
+class PrintEnemiesListAction() : MMButtonAction("Print Enemies")
+{
+    protected override void OnClick()
+    {
+        ListAllEnemies(true);
+    }
+    internal static void ListAllEnemies(bool nameOnly){
+        // #if DEBUG
+        // nameOnly = false;
+        // #endif
+        Plugin.Logger.LogInfo("-- Inside Enemies ---");
+        PrintListEnemy(RoundManager.Instance.currentLevel.Enemies, nameOnly);
+        Plugin.Logger.LogInfo("-- Outside Enemies --");
+        PrintListEnemy(RoundManager.Instance.currentLevel.OutsideEnemies, nameOnly);
+        Plugin.Logger.LogInfo("-- Daytime Enemies --");
+        PrintListEnemy(RoundManager.Instance.currentLevel.DaytimeEnemies, nameOnly);
+    }
+    private static void PrintListEnemy(List<SpawnableEnemyWithRarity> listOfEnemies, bool nameOnly){
+        foreach (var enemy_ in listOfEnemies){
+            var alteredName = enemy_.enemyType.enemyName.Replace(' ','_');
+            alteredName = alteredName.Replace('-', '_');
+            if(nameOnly)
+                Plugin.Logger.LogInfo($"{enemy_.enemyType.enemyName} | Weight: {enemy_.rarity}");
+            else
+                Plugin.Logger.LogInfo($"public const string {alteredName} = \"{enemy_.enemyType.enemyName}\";");
+        }
+        Plugin.Logger.LogInfo("---------------------");
     }
 }

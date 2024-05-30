@@ -24,7 +24,7 @@ class LCActionPatches
 
 class TeleportSelfToEntranceAction() : MMButtonAction("Teleport Self To Entrance")
 {
-    public override void OnClick()
+    protected override void OnClick()
     {
         var self = StartOfRound.Instance.localPlayerController;
         int id = 0; // Main entrance
@@ -46,7 +46,7 @@ class TeleportSelfToEntranceAction() : MMButtonAction("Teleport Self To Entrance
 
 class ToggleTestRoomAction() : MMButtonAction("Toggle Test Room")
 {
-    public override void OnClick()
+    protected override void OnClick()
     {
         LCActionPatches.QMM_Instance.Debug_ToggleTestRoom();
     }

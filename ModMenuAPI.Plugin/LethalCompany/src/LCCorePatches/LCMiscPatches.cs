@@ -113,7 +113,7 @@ class PullLeverAction : MMButtonAction
     }
 
     static StartMatchLever? lever = null;
-    public override void OnClick()
+    protected override void OnClick()
     {
         if(lever is null)
         {
@@ -174,5 +174,5 @@ class WeatherOverride : MMButtonToggle
 }
 
 class SetPlanetWeathersAction() : MMButtonAction("Force Refresh Weathers") {
-    public override void OnClick() => StartOfRound.Instance.SetPlanetsWeather();
+    protected override void OnClick() => StartOfRound.Instance.SetPlanetsWeather();
 }
