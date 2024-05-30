@@ -4,17 +4,17 @@ namespace ModMenuAPI.Plugin.CW.CorePatches;
 
 class CWStatsPatches
 {
-    const string menuTitle = "Stats";
     internal static void Init()
     {
-        ModMenu.RegisterItem(new SetMoneyAction(), menuTitle);
-        ModMenu.RegisterItem(new ResetMoneyAction(), menuTitle);
+        new ModMenu("Stats")
+            .RegisterItem(new SetMoneyAction())
+            .RegisterItem(new ResetMoneyAction())
 
-        ModMenu.RegisterItem(new SetMetaCoinsAction(), menuTitle);
-        ModMenu.RegisterItem(new ResetMetaCoinsAction(), menuTitle);
+            .RegisterItem(new SetMetaCoinsAction())
+            .RegisterItem(new ResetMetaCoinsAction())
 
-        ModMenu.RegisterItem(new NextDayAction(), menuTitle);
-        ModMenu.RegisterItem(new FulfillQuotaAction(), menuTitle);
+            .RegisterItem(new NextDayAction())
+            .RegisterItem(new FulfillQuotaAction());
     }
 }
 

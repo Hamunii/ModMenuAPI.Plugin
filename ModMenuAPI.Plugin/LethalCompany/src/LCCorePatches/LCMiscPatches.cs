@@ -13,16 +13,16 @@ namespace ModMenuAPI.Plugin.LC.CorePatches;
 
 class LCMiscPatches
 {
-    const string menuMisc = "Misc";
     internal static MMButtonMenuInstantiable weatherOverridesMenu = new("Weather Override >");
     internal static void Init()
     {
-        ModMenu.RegisterItem(new IsEditorToggle(), menuMisc);
-        ModMenu.RegisterItem(new InfiniteCreditsToggle(), menuMisc);
-        ModMenu.RegisterItem(new MeetQuotaToggle(), menuMisc);
-        ModMenu.RegisterItem(weatherOverridesMenu, menuMisc);
-        ModMenu.RegisterItem(new SetPlanetWeathersAction(), menuMisc);
-        ModMenu.RegisterItem(new PullLeverAction(), menuMisc);
+        new ModMenu("Misc")
+            .RegisterItem(new IsEditorToggle())
+            .RegisterItem(new InfiniteCreditsToggle())
+            .RegisterItem(new MeetQuotaToggle())
+            .RegisterItem(weatherOverridesMenu)
+            .RegisterItem(new SetPlanetWeathersAction())
+            .RegisterItem(new PullLeverAction());
 
         if(StartOfRound.Instance is not null)
         {

@@ -11,13 +11,13 @@ namespace ModMenuAPI.Plugin.LC.CorePatches;
 
 class LCPlayerPatches
 {
-    const string menuPlayer = "Player";
     internal static void Init()
     {
-        ModMenu.RegisterItem(new InfiniteSprintToggle(), menuPlayer);
-        ModMenu.RegisterItem(new MovementCheatToggle(), menuPlayer);
-        ModMenu.RegisterItem(new OnDeathHealToggle(), menuPlayer);
-        ModMenu.RegisterItem(new InfiniteShotgunAmmoToggle(), menuPlayer);
+        new ModMenu("Player")
+            .RegisterItem(new InfiniteSprintToggle())
+            .RegisterItem(new MovementCheatToggle())
+            .RegisterItem(new OnDeathHealToggle())
+            .RegisterItem(new InfiniteShotgunAmmoToggle());
     }
 }
 class InfiniteSprintToggle() : MMButtonToggle(new MMItemMetadata("Infinite Sprint"){ InvokeOnInit = true })

@@ -6,11 +6,11 @@ namespace ModMenuAPI.Plugin.CW.CorePatches;
 
 class CWPlayerPatches
 {
-    const string menuTitle = "Player";
     internal static void Init()
     {
-        ModMenu.RegisterItem(new InfiniteJumpToggle(), menuTitle);
-        ModMenu.RegisterItem(new FastMovementToggle(), menuTitle);
+        new ModMenu("Player")
+            .RegisterItem(new InfiniteJumpToggle())
+            .RegisterItem(new FastMovementToggle());
     }
 }
 

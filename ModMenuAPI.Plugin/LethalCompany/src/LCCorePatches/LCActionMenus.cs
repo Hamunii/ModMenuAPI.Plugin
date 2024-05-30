@@ -15,12 +15,13 @@ class LCActionMenus
     internal static MMButtonMenuInstantiable itemSpawnMenu = new("Spawn Item >");
     internal static void Init()
     {
-        ModMenu.RegisterItem(enemySpawnInsideMenu, menuAction);
-        ModMenu.RegisterItem(enemySpawnOutsideMenu, menuAction);
-        ModMenu.RegisterItem(enemySpawnDaytimeMenu, menuAction);
-        ModMenu.RegisterItem(new PrintEnemiesListAction(), menuAction);
+        var menu = new ModMenu("Action")
+            .RegisterItem(enemySpawnInsideMenu)
+            .RegisterItem(enemySpawnOutsideMenu)
+            .RegisterItem(enemySpawnDaytimeMenu)
+            .RegisterItem(new PrintEnemiesListAction());
 
-        ModMenu.RegisterItem(itemSpawnMenu, menuAction);
+        menu.RegisterItem(itemSpawnMenu);
         
         if(RoundManager.Instance is not null)
         {

@@ -6,13 +6,14 @@ namespace ModMenuAPI.Plugin.LC.CorePatches;
 class LCActionPatches
 {
     internal static QuickMenuManager QMM_Instance = null!;
-    const string menuTitle = "Action";
 
     internal static void Init()
     {
         On.QuickMenuManager.Start += QuickMenuManager_Start;
-        ModMenu.RegisterItem(new TeleportSelfToEntranceAction(), menuTitle);
-        ModMenu.RegisterItem(new ToggleTestRoomAction(), menuTitle);
+
+        new ModMenu("Action")
+            .RegisterItem(new TeleportSelfToEntranceAction())
+            .RegisterItem(new ToggleTestRoomAction());
     }
 
     private static void QuickMenuManager_Start(On.QuickMenuManager.orig_Start orig, QuickMenuManager self)
