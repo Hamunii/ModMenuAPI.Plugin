@@ -1,6 +1,6 @@
+using ModMenuAPI.ModMenuItems;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using ModMenuAPI.ModMenuItems;
 
 namespace ModMenuAPI.Plugin.CW.CorePatches;
 
@@ -14,10 +14,13 @@ class CWPlayerPatches
     }
 }
 
-class InfiniteJumpToggle() : MMButtonToggle("Infinite Jump", "Removes check for touching ground when jumping.")
+class InfiniteJumpToggle()
+    : MMButtonToggle("Infinite Jump", "Removes check for touching ground when jumping.")
 {
     protected override void OnEnable() => IL.PlayerController.TryJump += PlayerController_TryJump;
+
     protected override void OnDisable() => IL.PlayerController.TryJump -= PlayerController_TryJump;
+
     private static void PlayerController_TryJump(ILContext il)
     {
         ILCursor c = new(il);
@@ -34,7 +37,9 @@ class InfiniteJumpToggle() : MMButtonToggle("Infinite Jump", "Removes check for 
 class FastMovementToggle() : MMButtonToggle("Fast Movement")
 {
     PlayerController? self = null;
-    protected override void OnEnable() {
+
+    protected override void OnEnable()
+    {
         if (Player.localPlayer is null)
         {
             On.PlayerController.Start += PlayerController_Start;
@@ -42,8 +47,8 @@ class FastMovementToggle() : MMButtonToggle("Fast Movement")
         }
 
         self = Player.localPlayer.refs.controller;
-        
-        if(!valuesSet)
+
+        if (!valuesSet)
         {
             origMovForce = self.movementForce;
             origStaminaReg = self.staminaRegRate;
@@ -58,9 +63,10 @@ class FastMovementToggle() : MMButtonToggle("Fast Movement")
 
         valuesSet = true;
     }
+
     protected override void OnDisable()
     {
-        if(self is null)
+        if (self is null)
             return;
 
         self.movementForce = origMovForce;
@@ -68,15 +74,17 @@ class FastMovementToggle() : MMButtonToggle("Fast Movement")
         self.jumpForceDuration = origJumpForceDur;
         self.jumpForceOverTime = origJumpForceOverTime;
     }
+
     static bool valuesSet = false;
     static float origMovForce;
     static float origStaminaReg;
     static float origJumpForceDur;
     static float origJumpForceOverTime;
+
     private void PlayerController_Start(On.PlayerController.orig_Start orig, PlayerController self)
     {
         orig(self);
-        if(self == Player.localPlayer.refs.controller)
+        if (self == Player.localPlayer.refs.controller)
         {
             OnEnable();
             On.PlayerController.Start -= PlayerController_Start;

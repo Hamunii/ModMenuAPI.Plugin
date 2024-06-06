@@ -14,22 +14,13 @@
 
     <!-- References - Game Assemblies -->
     <ItemGroup Condition="$(CI) != 'true'">
-        <Reference Include="$(ManagedDirectory)Assembly-CSharp.dll" Publicize="true" Private="false"/>
-        <Reference Include="$(ManagedDirectory)Unity.Netcode.Runtime.dll" Publicize="true" Private="false"/>
-        <Reference Include="$(ManagedDirectory)Unity.InputSystem.dll" Publicize="true" Private="false"/>
+        <Reference Include="$(ManagedDirectory)Assembly-CSharp.dll" Publicize="true" HookGen="true" Private="false"/>
+        <Reference Include="$(ManagedDirectory)Unity.Netcode.Runtime.dll" Private="false"/>
+        <Reference Include="$(ManagedDirectory)Unity.InputSystem.dll" Private="false"/>
     </ItemGroup>
 
     <!-- Package References - Game Assemblies -->
     <ItemGroup Condition="$(CI) == 'true'">
         <PackageReference Include="LethalCompany.GameLibs.Steam" Version="*-*" Publicize="true" PrivateAssets="all"/>
     </ItemGroup>
-
-    <!-- References - HookGen Assemblies -->
-    <ItemGroup>
-        <Reference Include="$(MSBuildProjectDirectory)/lib/MMHOOK_Assembly-CSharp.dll"/>
-    </ItemGroup>
-
-    <Target Name="CopyMMHOOK" AfterTargets="PreBuildEvent" Condition="$(CI) != 'true'">
-        <Copy SourceFiles="$(MMHOOKManaged)MMHOOK_Assembly-CSharp.dll" DestinationFolder="./lib" SkipUnchangedFiles="true"/>
-    </Target>
 </Project>

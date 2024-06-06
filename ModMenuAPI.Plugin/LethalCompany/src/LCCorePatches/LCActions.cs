@@ -1,5 +1,5 @@
-using UnityEngine;
 using ModMenuAPI.ModMenuItems;
+using UnityEngine;
 
 namespace ModMenuAPI.Plugin.LC.CorePatches;
 
@@ -16,7 +16,10 @@ class LCActionPatches
             .RegisterItem(new ToggleTestRoomAction());
     }
 
-    private static void QuickMenuManager_Start(On.QuickMenuManager.orig_Start orig, QuickMenuManager self)
+    private static void QuickMenuManager_Start(
+        On.QuickMenuManager.orig_Start orig,
+        QuickMenuManager self
+    )
     {
         QMM_Instance = self;
         orig(self);
@@ -34,7 +37,7 @@ class TeleportSelfToEntranceAction() : MMButtonAction("Teleport Self To Entrance
         {
             if (entrance.entranceId != id)
                 continue;
-                
+
             // IF inside, set outside, or vice-versa.
             if (self.isInsideFactory != entrance.isEntranceToBuilding)
             {

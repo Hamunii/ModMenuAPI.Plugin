@@ -35,6 +35,7 @@
         <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.4.*" PrivateAssets="all"/>
         <PackageReference Include="BepInEx.Core" Version="5.*" PrivateAssets="all"/>
         <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" PrivateAssets="all"/>
+        <PackageReference Include="Hamunii.MonoMod.RuntimeDetour.HookGen.MSBuild" Version="0.*" PrivateAssets="all"/>
         <ProjectReference Include="$(SolutionDir)ModMenuAPI/ModMenuAPI/ModMenuAPI.csproj"/>
     </ItemGroup>
 
