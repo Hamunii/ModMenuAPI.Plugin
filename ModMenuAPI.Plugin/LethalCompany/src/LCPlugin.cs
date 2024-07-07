@@ -1,9 +1,9 @@
+using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
+using ModMenuAPI.ModMenuItems;
 using ModMenuAPI.Plugin.LC.CorePatches;
 using MonoMod.RuntimeDetour.HookGen;
-using System.Reflection;
-using ModMenuAPI.ModMenuItems;
 
 namespace ModMenuAPI.Plugin.LC;
 
@@ -11,7 +11,8 @@ namespace ModMenuAPI.Plugin.LC;
 internal class Plugin : BaseUnityPlugin
 {
     public static Plugin Instance { get; private set; } = null!;
-    internal new static ManualLogSource Logger { get; private set; } = null!;
+    internal static new ManualLogSource Logger { get; private set; } = null!;
+
     private void Awake()
     {
         Logger = base.Logger;

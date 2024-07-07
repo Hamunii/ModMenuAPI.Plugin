@@ -1,11 +1,11 @@
 using System;
 using System.Collections;
 using HarmonyLib;
+using ModMenuAPI.ModMenuItems;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using UnityEngine;
-using ModMenuAPI.ModMenuItems;
 
 namespace ModMenuAPI.Plugin.LC.CorePatches;
 
@@ -20,7 +20,9 @@ class LCPlayerPatches
             .RegisterItem(new InfiniteShotgunAmmoToggle());
     }
 }
-class InfiniteSprintToggle() : MMButtonToggle(new MMItemMetadata("Infinite Sprint"){ InvokeOnInit = true })
+
+class InfiniteSprintToggle()
+    : MMButtonToggle(new MMItemMetadata("Infinite Sprint") { InvokeOnInit = true })
 {
     protected override void OnEnable() => On.GameNetcodeStuff.PlayerControllerB.Update += InfiniteSprint_PlayerControllerB_Update;
     protected override void OnDisable() => On.GameNetcodeStuff.PlayerControllerB.Update -= InfiniteSprint_PlayerControllerB_Update;
@@ -32,44 +34,57 @@ class InfiniteSprintToggle() : MMButtonToggle(new MMItemMetadata("Infinite Sprin
     }
 }
 
-internal class MovementCheatToggle() : MMButtonToggle(new MMItemMetadata("Movement Cheat"){ InvokeOnInit = true })
+internal class MovementCheatToggle()
+    : MMButtonToggle(new MMItemMetadata("Movement Cheat") { InvokeOnInit = true })
 {
-    protected override void OnEnable(){
+    protected override void OnEnable()
+    {
         On.GameNetcodeStuff.PlayerControllerB.Jump_performed += MovementCheat_PlayerControllerB_Jump_performed;
         On.GameNetcodeStuff.PlayerControllerB.Update += MovementCheat_PlayerControllerB_Update;
     }
-    protected override void OnDisable(){
+
+    protected override void OnDisable()
+    {
         On.GameNetcodeStuff.PlayerControllerB.Jump_performed -= MovementCheat_PlayerControllerB_Jump_performed;
         On.GameNetcodeStuff.PlayerControllerB.Update -= MovementCheat_PlayerControllerB_Update;
     }
 
-    private static void MovementCheat_PlayerControllerB_Update(On.GameNetcodeStuff.PlayerControllerB.orig_Update orig, GameNetcodeStuff.PlayerControllerB self) {
-        if (self.isSpeedCheating){
+    private static void MovementCheat_PlayerControllerB_Update(On.GameNetcodeStuff.PlayerControllerB.orig_Update orig, GameNetcodeStuff.PlayerControllerB self)
+    {
+        if (self.isSpeedCheating)
+        {
             self.walkForce *= 0.8f;
             self.walkForce = Vector3.ClampMagnitude(self.walkForce, 0.1f);
-            if(self.isSprinting){
+            if (self.isSprinting)
+            {
                 self.fallValue -= 130 * Time.deltaTime;
                 self.thisController.Move(self.walkForce * 700 * Time.deltaTime);
             }
-            else{
+            else
+            {
                 self.thisController.Move(self.walkForce * 200 * Time.deltaTime);
             }
         }
         orig(self);
     }
-    private static void MovementCheat_PlayerControllerB_Jump_performed(On.GameNetcodeStuff.PlayerControllerB.orig_Jump_performed orig, GameNetcodeStuff.PlayerControllerB self, UnityEngine.InputSystem.InputAction.CallbackContext context) {
+
+    private static void MovementCheat_PlayerControllerB_Jump_performed(On.GameNetcodeStuff.PlayerControllerB.orig_Jump_performed orig, GameNetcodeStuff.PlayerControllerB self, UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
         self.playerSlidingTimer = 0f;
         self.isJumping = true;
         self.sprintMeter = Mathf.Clamp(self.sprintMeter - 0.08f, 0f, 1f);
         self.movementAudio.PlayOneShot(StartOfRound.Instance.playerJumpSFX);
-        if(self.jumpCoroutine != null){
+        if (self.jumpCoroutine != null)
+        {
             self.StopCoroutine(self.jumpCoroutine);
             // Cheat stuff
             self.isSpeedCheating = true;
-            if(self.isSprinting){
+            if (self.isSprinting)
+            {
                 self.jumpForce = 50f;
             }
-            else{
+            else
+            {
                 self.jumpForce = 13f;
             }
             self.jumpCoroutine = self.StartCoroutine(CustomPlayerJump(self));
@@ -77,8 +92,10 @@ internal class MovementCheatToggle() : MMButtonToggle(new MMItemMetadata("Moveme
         }
         self.jumpCoroutine = self.StartCoroutine(self.PlayerJump());
     }
+
     // It turns out, using a transpiler on an IEnumerator is not as easy.
-    private static IEnumerator CustomPlayerJump(GameNetcodeStuff.PlayerControllerB self) {
+    private static IEnumerator CustomPlayerJump(GameNetcodeStuff.PlayerControllerB self)
+    {
         self.playerBodyAnimator.SetBool("Jumping", value: true);
         self.fallValue = self.jumpForce;
         self.fallValueUncapped = self.jumpForce;
@@ -96,13 +113,14 @@ internal class MovementCheatToggle() : MMButtonToggle(new MMItemMetadata("Moveme
     }
 }
 
-internal class OnDeathHealToggle() : MMButtonToggle(new MMItemMetadata("On Death: Heal"){ InvokeOnInit = true })
+internal class OnDeathHealToggle()
+    : MMButtonToggle(new MMItemMetadata("On Death: Heal") { InvokeOnInit = true })
 {
     protected override void OnEnable() => On.GameNetcodeStuff.PlayerControllerB.KillPlayer += OnDeathHeal_PlayerControllerB_KillPlayer;
     protected override void OnDisable() => On.GameNetcodeStuff.PlayerControllerB.KillPlayer -= OnDeathHeal_PlayerControllerB_KillPlayer;
 
-    private static void OnDeathHeal_PlayerControllerB_KillPlayer(On.GameNetcodeStuff.PlayerControllerB.orig_KillPlayer orig, GameNetcodeStuff.PlayerControllerB self, Vector3 bodyVelocity, bool spawnBody, CauseOfDeath causeOfDeath, int deathAnimation)
-    {   
+    private void OnDeathHeal_PlayerControllerB_KillPlayer(On.GameNetcodeStuff.PlayerControllerB.orig_KillPlayer orig, GameNetcodeStuff.PlayerControllerB self, Vector3 bodyVelocity, bool spawnBody, CauseOfDeath causeOfDeath, int deathAnimation, Vector3 positionOffset)
+    {
         self.health = 100;
         self.MakeCriticallyInjured(enable: false);
         HUDManager.Instance.UpdateHealthUI(self.health, hurtPlayer: false);
@@ -111,7 +129,8 @@ internal class OnDeathHealToggle() : MMButtonToggle(new MMItemMetadata("On Death
     }
 }
 
-internal class InfiniteShotgunAmmoToggle() : MMButtonToggle(new MMItemMetadata("Infinite Shotgun Ammo"){ InvokeOnInit = true })
+internal class InfiniteShotgunAmmoToggle()
+    : MMButtonToggle(new MMItemMetadata("Infinite Shotgun Ammo") { InvokeOnInit = true })
 {
     protected override void OnEnable() => IL.ShotgunItem.ItemActivate += InfiniteShotgunAmmo_ShotgunItem_ItemActivate;
     protected override void OnDisable() => IL.ShotgunItem.ItemActivate -= InfiniteShotgunAmmo_ShotgunItem_ItemActivate;
@@ -134,10 +153,7 @@ internal class InfiniteShotgunAmmoToggle() : MMButtonToggle(new MMItemMetadata("
         // and br doesn't, we add a Pop before it.
         */
         ILCursor c = new(il);
-        c.GotoNext(
-            x => x.MatchLdfld<ShotgunItem>("shellsLoaded")
-        );
-
+        c.GotoNext(x => x.MatchLdfld<ShotgunItem>("shellsLoaded"));
         // ldfld int32 ShotgunItem::shellsLoaded => pop
         c.Remove();
         c.Emit(OpCodes.Pop);
@@ -146,4 +162,3 @@ internal class InfiniteShotgunAmmoToggle() : MMButtonToggle(new MMItemMetadata("
         c.Next.OpCode = OpCodes.Br;
     }
 }
-
